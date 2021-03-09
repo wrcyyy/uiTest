@@ -1,0 +1,27 @@
+desc: 登录页面元素
+parameters:
+  - name: user_pwd_login_btn
+    desc: 账号密码登录按钮
+    data: {
+      method: css_selector,
+      value: "#rc-tabs-0-tab-account"
+    }
+  - name: email_addr
+    desc: 邮箱输入框
+    data: {
+      method: css_selector,
+      value: "#username"
+    }
+  - name: password
+    desc: 密码输入框
+    data: {
+      method: css_selector,
+      value: "#password"
+    }
+
+  - name: login_btn
+    desc: 登录按钮
+    data: {
+      method: css_selector,
+      value: "#root > div > div > div.main___1F5GY > div > form > div.ant-row.ant-form-item > div > div > div > button"
+    }
