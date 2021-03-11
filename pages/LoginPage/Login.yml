@@ -25,3 +25,17 @@ parameters:
       method: css_selector,
       value: "#root > div > div > div.main___1F5GY > div > form > div.ant-row.ant-form-item > div > div > div > button"
     }
+
+  - name: error_info_by_interface
+    desc: 由接口引发的错误信息展示区域
+    data: {
+      method: css_selector,
+      value: "#rc-tabs-0-panel-account > div.ant-alert.ant-alert-error > div > div.ant-alert-message"
+    }
+
+  - name: email_input_box_alert
+    desc: 邮件输入框提示信息
+    data: {
+      method: css_selector,
+      value: "#rc-tabs-0-panel-account > div.ant-row.ant-form-item.ant-form-item-with-help.ant-form-item-has-error > div > div.ant-form-item-explain.ant-form-item-explain-error > div"
+    }

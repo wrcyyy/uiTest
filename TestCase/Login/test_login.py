@@ -11,8 +11,8 @@
 ------------------------------------
 """
 import allure
-import time
 import os
+from common.assertion import Assert
 
 current_dir = os.path.dirname(__file__)
 
@@ -21,17 +21,22 @@ class TestLogin:
     @allure.story("Login")
     @allure.severity(allure.severity_level.NORMAL)
     @allure.description("登录-界面检查")
-    @allure.title('登录成功')
-    def test_login_with_email_password(self, login_page, web_driver, tmp_path):
+    @allure.title('使用不存在的用户进行登录')
+    def test_login_with_does_not_exist_email(self, login_page, web_driver):
         login_page.open_login_page()
         login_page.send_email("wrcyyy@126.com")
         login_page.send_password("123456")
         login_page.click_login_btn()
-        time.sleep(2)
-        file_path = os.path.join(tmp_path, 'test.png')
-        login_page.save_screenshot(file_path)
-        allure.attach.file(file_path, attachment_type=allure.attachment_type.PNG)
+        err_info = login_page.get_text(login_page.locator('error_info_by_interface'))
+        Assert.assert_equal((err_info, '用户不存在'))
 
-    # def test_download(self, login_page):
-    #     login_page.open_url('https://dldir1.qq.com/invc/tt/QQBrowser_Setup_qb10.exe')
-    #     time.sleep(10)
+    @allure.story("Login")
+    @allure.severity(allure.severity_level.NORMAL)
+    @allure.description("登录-界面检查")
+    @allure.title('使用错误的邮箱进行登录')
+    def test_login_with_bad_email(self, login_page, web_driver):
+        login_page.open_login_page()
+        login_page.send_email('wrcyyy')
+        login_page.send_password('123456')
+        err_info = login_page.get_text(login_page.locator('email_input_box_alert'))
+        Assert.assert_equal((err_info, '请输入正确的邮箱!'))

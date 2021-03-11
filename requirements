@@ -1,4 +1,5 @@
 selenium
 pytest
+pytest-xdist
 pyyaml
 allure-pytest

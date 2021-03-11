@@ -10,6 +10,7 @@
 @IDE     : PyCharm
 ------------------------------------
 """
+import allure
 import logging
 import os
 import pytest
@@ -17,6 +18,7 @@ from selenium import webdriver
 import sys
 
 download_dir = os.path.join(os.path.dirname(__file__), 'asset')
+driver = None
 
 
 def pytest_addoption(parser):
@@ -31,12 +33,13 @@ def pytest_addoption(parser):
     parser.addoption("--ui", action="store", default="open", help="whether use ui:open|close")
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='session')
 def web_driver(request):
     """
     :param request:
     :return:
     """
+    global driver
     browser = request.config.getoption("--browser")
     ui = request.config.getoption("--ui")
     chrome_options = webdriver.ChromeOptions()
@@ -82,3 +85,17 @@ def web_driver(request):
     yield driver
     driver.close()
     driver.quit()
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport():
+    """
+    对断言失败的用例进行截图
+    :return:
+    """
+    outcome = yield
+    rep = outcome.get_result()
+    # 这里只处理实际执行失败的用例，跳过setup/teardown
+    if rep.when == "call" and rep.failed:
+        if hasattr(driver, "get_screenshot_as_png"):
+            allure.attach(driver.get_screenshot_as_png(), '失败截图', allure.attachment_type.PNG)
