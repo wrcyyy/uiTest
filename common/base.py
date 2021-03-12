@@ -17,7 +17,7 @@ from selenium.webdriver.common.keys import Keys
 from utils.fileoperate import FileOperate
 
 
-class Base:
+class BaseOperation:
 
     def __init__(self, driver):
         self.__config_info = FileOperate.read_yaml(

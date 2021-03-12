@@ -11,14 +11,17 @@
 ------------------------------------
 """
 import allure
-from common.base import Base
-from pages.pages import LoginPageElements
+import os
+from pages.pages import BasePageElements
+from common.base import BaseOperation
+
+current_dir = os.path.abspath(os.path.dirname(__file__))
 
 
-class LoginPage(Base, LoginPageElements):
+class LoginPage(BaseOperation, BasePageElements):
     def __init__(self, driver):
-        super(LoginPage, self).__init__(driver)
-        LoginPageElements.__init__(self)
+        BaseOperation.__init__(self, driver)
+        BasePageElements.__init__(self, '', 'Login.yml', current_dir)
 
     @allure.step('输入邮箱地址')
     def send_email(self, email_address: str):
@@ -39,7 +42,11 @@ class LoginPage(Base, LoginPageElements):
 
 if __name__ == '__main__':
     from selenium import webdriver
+    from selenium.webdriver import ChromeOptions
 
-    driver = webdriver.Chrome()
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    driver = webdriver.Chrome(options=chrome_options)
     login_page = LoginPage(driver)
     print(login_page.info)
+    # print(LoginPage.__mro__)
